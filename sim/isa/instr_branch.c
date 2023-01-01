@@ -1,5 +1,10 @@
-#include "isa_types.h"
 #include "sim.h"
+#include "isa_types.h"
+
+int instr_nop(riscv_state_t * state)  {
+    incr_pc(state);
+    return 0;
+}
 
 int instr_lui(riscv_state_t * state) {
     uint32_t reg_idx = state->ir.U_type.rd;
@@ -14,7 +19,7 @@ int instr_lui(riscv_state_t * state) {
 int instr_auipc(riscv_state_t * state) {
     uint32_t reg_idx = state->ir.U_type.rd;
     uint32_t imm     = state->ir.U_type.imm31_12;
-    uint32_t pc      = (uint32_t)(state->pc);
+    uint64_t pc      = (uint64_t)(state->pc);
 
     reg_write(state, reg_idx, (imm << 12) + pc);
 
@@ -25,16 +30,16 @@ int instr_auipc(riscv_state_t * state) {
 int isntr_jal(riscv_state_t * state) {
     uint32_t reg_idx = state->ir.U_type.rd;
     uint32_t imm     = state->ir.U_type.imm31_12;
-    uint32_t pc      = (uint32_t)(state->pc);
+    uint64_t pc      = (uint64_t)(state->pc);
 
     reg_write(state, reg_idx, pc + 4);
 
-    state->pc = pc + (imm << 1);
+    state->pc = (program_counter_t)(pc + (imm << 1));
     return 0;
 }
 
-int instr_jalr(riscv_state_t * state) {
-    
+int instr_jalr() {
+    return 0;
 }
 
 // TODO - impliment later

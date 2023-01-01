@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.0)
 project(riscv_sim)
 
 set(SOURCES
-    sim/runner/sim_main.c 
+    sim/runner/sim_main.c
+    sim/runner/elf_tools.c
+    sim/runner/sim_ops.c
+    sim/isa/instr_branch.c
 )
 
 add_executable(riscv_sim ${SOURCES})

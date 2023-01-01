@@ -5,39 +5,6 @@
 // https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf
 
 // RISC-V has 4 instruction formats
-typedef union {
-    struct {
-        uint32_t opcode     : 7;
-        uint32_t rd         : 5;
-        uint32_t funct3     : 3;
-        uint32_t rs1        : 5;
-        uint32_t rs2        : 5;
-        uint32_t funct7     : 7;
-    } R_type;
-
-    struct {
-        uint32_t opcode     : 7;
-        uint32_t rd         : 5;
-        uint32_t funct3     : 3;
-        uint32_t rs1        : 5;
-        uint32_t imm11_0    : 12;
-    } I_type;
-
-    struct {
-        uint32_t opcode     : 7;
-        uint32_t imm4_0     : 5;
-        uint32_t funct3     : 3;
-        uint32_t rs1        : 5;
-        uint32_t rs2        : 5;
-        uint32_t imm11_5    : 7;
-    } S_type;
-
-    struct {
-        uint32_t opcode     : 7;
-        uint32_t rd         : 5;
-        uint32_t imm31_12   : 20;
-    } U_type;
-} instr_format_t;
 
 enum {
     OPC_LUI     = 0b0110111,
@@ -77,4 +44,8 @@ enum {
     OPC_SRA     = 0b0110011,
     OPC_OR      = 0b0110011,
     OPC_AND     = 0b0110011,
+    OPC_NOP     = 0b0010011,
 };
+
+int instr_nop(riscv_state_t * state);
+int instr_lui(riscv_state_t * state);

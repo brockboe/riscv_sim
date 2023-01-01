@@ -19,6 +19,42 @@ if(!cond) {                                                                     
 #define RISCV_DEFAULT_MEMSIZE   (0x100000)
 #define RISCV_DEFAULT_PC        (0x0)
 
+typedef union {
+    struct {
+        uint32_t opcode     : 7;
+        uint32_t rd         : 5;
+        uint32_t funct3     : 3;
+        uint32_t rs1        : 5;
+        uint32_t rs2        : 5;
+        uint32_t funct7     : 7;
+    } R_type;
+
+    struct {
+        uint32_t opcode     : 7;
+        uint32_t rd         : 5;
+        uint32_t funct3     : 3;
+        uint32_t rs1        : 5;
+        uint32_t imm11_0    : 12;
+    } I_type;
+
+    struct {
+        uint32_t opcode     : 7;
+        uint32_t imm4_0     : 5;
+        uint32_t funct3     : 3;
+        uint32_t rs1        : 5;
+        uint32_t rs2        : 5;
+        uint32_t imm11_5    : 7;
+    } S_type;
+
+    struct {
+        uint32_t opcode     : 7;
+        uint32_t rd         : 5;
+        uint32_t imm31_12   : 20;
+    } U_type;
+
+    uint32_t raw;
+} instr_format_t;
+
 // negative/zero/postive flags
 typedef union {
     struct {
@@ -31,12 +67,11 @@ typedef union {
 } status_flags_t;
 
 typedef uint32_t *    program_counter_t;
-typedef uint32_t      instruction_register_t;
 
 typedef struct {
     status_flags_t          status;         // negative/zero/positive status
     program_counter_t       pc;             // program counter
-    instruction_register_t  ir;             // instruction register
+    instr_format_t          ir;             // instruction register
     uint32_t *              mem;            // pointer to block of simulatred RISC-V memory
     uint32_t                mem_size;       // size of memory
     uint32_t                regs[32];       // register file
