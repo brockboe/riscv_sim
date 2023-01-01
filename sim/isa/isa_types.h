@@ -49,3 +49,4 @@ enum {
 
 int instr_nop(riscv_state_t * state);
 int instr_lui(riscv_state_t * state);
+int instr_jal(riscv_state_t * state);

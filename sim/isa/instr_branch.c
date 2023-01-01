@@ -27,14 +27,28 @@ int instr_auipc(riscv_state_t * state) {
     return 0;
 }
 
-int isntr_jal(riscv_state_t * state) {
+static inline int64_t untangle_jtype(instr_format_t ir)
+{
+    int64_t ret = 0;
+    ret |= ir.J_type.imm_10_1  << 1;
+    ret |= ir.J_type.imm_11    << 11;
+    ret |= ir.J_type.imm_19_12 << 12;
+    ret |= ir.J_type.imm_20    << 20;
+
+    if( ir.J_type.imm_20 )
+        { ret |= 0xFFF << 20; }
+
+    return ret;
+}
+
+int instr_jal(riscv_state_t * state) {
     uint32_t reg_idx = state->ir.U_type.rd;
-    uint32_t imm     = state->ir.U_type.imm31_12;
-    uint64_t pc      = (uint64_t)(state->pc);
+    int64_t imm      = untangle_jtype(state->ir);
+    int64_t pc       = (int64_t)(state->pc);
 
     reg_write(state, reg_idx, pc + 4);
 
-    state->pc = (program_counter_t)(pc + (imm << 1));
+    state->pc = (program_counter_t)(pc + (imm << 1)) + 4;
     return 0;
 }
 

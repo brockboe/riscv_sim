@@ -34,6 +34,9 @@ void sim_dispatch_instruction(uint32_t opcode)
     case OPC_NOP:
         instr_nop(&state);
         break;
+    case OPC_JAL:
+        instr_jal(&state);
+        break;
     }
 }
 
@@ -56,10 +59,14 @@ int main( int argc, char ** argv )
     assert(elf_file != NULL);
 
     text_data = elf_get_section(elf_file, ".text");
+    assert(text_data != NULL);
 
-    for(uint32_t i = 0; i < sizeof(text_data)/sizeof(instr_format_t); i++)
+    state.pc  = (uint32_t *)text_data;
+
+    //for(uint32_t i = 0; i < sizeof(text_data)/sizeof(uint32_t); i++)
+    while(1)
     {
-        state.ir.raw = ((uint32_t *)text_data)[i];
+        state.ir.raw = *(state.pc);
         sim_dispatch_instruction(state.ir.R_type.opcode);
     }
 

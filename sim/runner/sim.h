@@ -52,6 +52,16 @@ typedef union {
         uint32_t imm31_12   : 20;
     } U_type;
 
+    // J type instructions are cursed...
+    struct {
+        uint32_t opcode     : 7;
+        uint32_t rd         : 5;
+        uint32_t imm_19_12  : 8;
+        uint32_t imm_11     : 1;
+        uint32_t imm_10_1   : 10;
+        uint32_t imm_20     : 1;
+    } J_type;
+
     uint32_t raw;
 } instr_format_t;
 
