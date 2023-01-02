@@ -47,6 +47,34 @@ enum {
     OPC_NOP     = 0b0010011,
 };
 
+enum {
+    FUNCT3_ADDI  = 0b000,
+    FUNCT3_SLTI  = 0b010,
+    FUNCT3_SLTIU = 0b011,
+    FUNCT3_XORI  = 0b100,
+    FUNCT3_ORI   = 0b110,
+    FUNCT3_ANDI  = 0b111,
+    FUNCT3_SLLI  = 0b001,
+    FUNCT3_SR    = 0b101,
+};
+
+enum {
+    IMM_FUNCT_SRLI = 0b0000000,
+    IMM_FUNCT_SRAI = 0b0100000,
+};
+
+// branch & flow control instructions
 int instr_nop(riscv_state_t * state);
 int instr_lui(riscv_state_t * state);
 int instr_jal(riscv_state_t * state);
+
+// immediate instructions
+int instr_addi(riscv_state_t * state);
+int instr_slti(riscv_state_t * state);
+int instr_sltiu(riscv_state_t * state);
+int instr_andi(riscv_state_t * state);
+int instr_ori(riscv_state_t * state);
+int instr_xori(riscv_state_t * state);
+int instr_slli(riscv_state_t * state);
+int instr_srli(riscv_state_t * state);
+int instr_srai(riscv_state_t * state);

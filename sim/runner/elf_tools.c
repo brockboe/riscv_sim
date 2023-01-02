@@ -6,12 +6,12 @@
 #include "global.h"
 #include "elf_tools.h"
 
-uint8_t * elf_get_section( FILE * elf_file, char * sect_name )
+section_data_t elf_get_section( FILE * elf_file, char * sect_name )
 {
     Elf64_Ehdr elf_hdr;
     Elf64_Shdr elf_sect_hdr;
     char * sect_names   = NULL;
-    uint8_t * section_data = NULL;
+    section_data_t section_data;
 
     // retrieve the elf header
     fread( &elf_hdr, 1, sizeof(Elf64_Ehdr), elf_file );
@@ -40,9 +40,10 @@ uint8_t * elf_get_section( FILE * elf_file, char * sect_name )
         {
             // we've found the text section. Copy the text data into a
             // buffer so we can return it
-            section_data = (uint8_t *)malloc(sizeof(elf_sect_hdr.sh_size));
+            section_data.data = (uint8_t *)malloc(elf_sect_hdr.sh_size);
+            section_data.size = (uint64_t)(elf_sect_hdr.sh_size);
             fseek(elf_file, elf_sect_hdr.sh_offset, SEEK_SET);
-            fread(section_data, 1, sizeof(section_data), elf_file);
+            fread(section_data.data, 1, section_data.size, elf_file);
             break;
         }
     }
@@ -51,15 +52,15 @@ uint8_t * elf_get_section( FILE * elf_file, char * sect_name )
     return section_data;
 }
 
-uint8_t * elf_get_section_fname( char * fname, char * sect_name)
+section_data_t elf_get_section_fname( char * fname, char * sect_name)
 {
     FILE * elf_file = NULL;
-    uint8_t * section_data = NULL;
+    section_data_t section_data;
 
     elf_file = fopen(fname, "r");
     assert(elf_file != NULL);
 
     section_data = elf_get_section(elf_file, sect_name);
-    assert(section_data != NULL);
+    assert(section_data.data != NULL);
     return section_data;
 }

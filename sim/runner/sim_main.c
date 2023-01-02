@@ -24,18 +24,54 @@ int riscv_teardown() {
     return 0;
 }
 
-void sim_dispatch_instruction(uint32_t opcode)
+void sim_dispatch_instruction(instr_format_t ir)
 {
-    switch(opcode)
+    switch(ir.R_type.opcode)
     {
     case OPC_LUI:
         instr_lui(&state);
         break;
-    case OPC_NOP:
-        instr_nop(&state);
-        break;
     case OPC_JAL:
         instr_jal(&state);
+        break;
+
+    // immediate instructions
+    case OPC_ADDI:
+        switch(ir.I_type.funct3)
+        {
+            case FUNCT3_ADDI:
+                instr_addi(&state);
+                break;
+            case FUNCT3_SLTI:
+                instr_slti(&state);
+                break;
+            case FUNCT3_SLTIU:
+                instr_sltiu(&state);
+                break;
+            case FUNCT3_XORI:
+                instr_xori(&state);
+                break;
+            case FUNCT3_ORI:
+                instr_ori(&state);
+                break;
+            case FUNCT3_ANDI:
+                instr_andi(&state);
+                break;
+            case FUNCT3_SLLI:
+                instr_slli(&state);
+                break;
+            case FUNCT3_SR:
+                switch(ir.I_type.imm11_0 >> 5)
+                {
+                    case IMM_FUNCT_SRLI:
+                        instr_srli(&state);
+                        break;
+                    case IMM_FUNCT_SRAI:
+                        instr_srai(&state);
+                        break;
+                }
+                break;
+        }
         break;
     }
 }
@@ -44,7 +80,7 @@ int main( int argc, char ** argv )
 {
     char * elf_fname = NULL;
     FILE * elf_file  = NULL;
-    uint8_t * text_data = NULL;
+    section_data_t text_data;
 
     riscv_init();
 
@@ -59,15 +95,15 @@ int main( int argc, char ** argv )
     assert(elf_file != NULL);
 
     text_data = elf_get_section(elf_file, ".text");
-    assert(text_data != NULL);
+    assert(text_data.data != NULL);
 
-    state.pc  = (uint32_t *)text_data;
+    state.pc  = (uint32_t *)(text_data.data);
 
     //for(uint32_t i = 0; i < sizeof(text_data)/sizeof(uint32_t); i++)
     while(1)
     {
         state.ir.raw = *(state.pc);
-        sim_dispatch_instruction(state.ir.R_type.opcode);
+        sim_dispatch_instruction(state.ir);
     }
 
     riscv_teardown();

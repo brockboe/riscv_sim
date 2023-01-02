@@ -10,22 +10,28 @@
 
 void elf_print_text_data(char * elf_file)
 {
-    uint8_t * text_data = elf_get_section_fname(elf_file, ".text");
+    section_data_t text_data = elf_get_section_fname(elf_file, ".text");
 
-    for(int i = 0; i < (int)sizeof(text_data); i++)
+    for(int i = 0; i < (int)text_data.size; i++)
     {
-        printf("%02X ", ((uint8_t *)text_data)[i]);
+        printf("%02X ", text_data.data[i]);
 
         if( (i > 0) && !((i+1) % INSTR_WIDTH_BYTES) )
             { printf("\n"); }
     }
 
-    free(text_data);
+    free(text_data.data);
 }
 
-int main()
+int main(int argc, char ** argv)
 {
-    elf_print_text_data("lui_auipc.elf");
+    if(argc != 2)
+    {
+        printf("usage: elf_reader <fname>\n");
+        exit(1);
+    }
+
+    elf_print_text_data(argv[1]);
 
     return 0;
 }

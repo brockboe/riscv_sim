@@ -7,6 +7,7 @@ set(SOURCES
     sim/runner/elf_tools.c
     sim/runner/sim_ops.c
     sim/isa/instr_branch.c
+    sim/isa/instr_imm.c
 )
 
 add_executable(riscv_sim ${SOURCES})
