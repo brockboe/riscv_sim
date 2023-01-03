@@ -23,4 +23,4 @@ target_include_directories(riscv_sim
         ${PROJECT_SOURCE_DIR}/sim/runner
 )
 
-add_subdirectory(sim/test/elf)
+add_subdirectory(util/elf)

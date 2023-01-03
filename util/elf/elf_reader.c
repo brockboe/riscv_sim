@@ -12,6 +12,7 @@ void elf_print_text_data(char * elf_file)
 {
     section_data_t text_data = elf_get_section_fname(elf_file, ".text");
 
+    printf("printing %ld bytes of .text section data of %s...\n", text_data.size, elf_file);
     for(int i = 0; i < (int)text_data.size; i++)
     {
         printf("%02X ", text_data.data[i]);
@@ -30,7 +31,7 @@ int main(int argc, char ** argv)
         printf("usage: elf_reader <fname>\n");
         exit(1);
     }
-
+ 
     elf_print_text_data(argv[1]);
 
     return 0;
