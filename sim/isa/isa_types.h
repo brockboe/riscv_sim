@@ -4,8 +4,7 @@
 // Taken from RISC-V ISA
 // https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf
 
-// RISC-V has 4 instruction formats
-
+// individual opcodes
 enum {
     OPC_LUI     = 0b0110111,
     OPC_AUIPC   = 0b0010111,
@@ -47,6 +46,7 @@ enum {
     OPC_NOP     = 0b0010011,
 };
 
+// immediate codes
 enum {
     FUNCT3_ADDI  = 0b000,
     FUNCT3_SLTI  = 0b010,
@@ -61,6 +61,27 @@ enum {
 enum {
     IMM_FUNCT_SRLI = 0b0000000,
     IMM_FUNCT_SRAI = 0b0100000,
+};
+
+// register codes
+enum {
+    FUNCT3_ADD  = 0b000,
+    FUNCT3_SUB  = 0b000,
+    FUNCT3_SLL  = 0b001,
+    FUNCT3_SLT  = 0b010,
+    FUNCT3_SLTU = 0b011,
+    FUNCT3_XOR  = 0b100,
+    FUNCT3_SRL  = 0b101,
+    FUNCT3_SRA  = 0b101,
+    FUNCT3_OR   = 0b110,
+    FUNCT3_AND  = 0b111,
+};
+
+enum {
+    FUNCT7_ADD = 0b0000000,
+    FUNCT7_SUB = 0b0100000,
+    FUNCT7_SRL = 0b0000000,
+    FUNCT7_SRA = 0b0100000,
 };
 
 // branch & flow control instructions
@@ -78,3 +99,15 @@ int instr_xori(riscv_state_t * state);
 int instr_slli(riscv_state_t * state);
 int instr_srli(riscv_state_t * state);
 int instr_srai(riscv_state_t * state);
+
+// reg-reg instructions
+int instr_add(riscv_state_t * state);
+int instr_slt(riscv_state_t * state);
+int instr_sltu(riscv_state_t * state);
+int instr_and(riscv_state_t * state);
+int instr_or(riscv_state_t * state);
+int instr_xor(riscv_state_t * state);
+int instr_sll(riscv_state_t * state);
+int instr_srl(riscv_state_t * state);
+int instr_sub(riscv_state_t * state);
+int instr_sra(riscv_state_t * state);

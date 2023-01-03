@@ -39,38 +39,86 @@ void sim_dispatch_instruction(instr_format_t ir)
     case OPC_ADDI:
         switch(ir.I_type.funct3)
         {
-            case FUNCT3_ADDI:
-                instr_addi(&state);
+        case FUNCT3_ADDI:
+            instr_addi(&state);
+            break;
+        case FUNCT3_SLTI:
+            instr_slti(&state);
+            break;
+        case FUNCT3_SLTIU:
+            instr_sltiu(&state);
+            break;
+        case FUNCT3_XORI:
+            instr_xori(&state);
+            break;
+        case FUNCT3_ORI:
+            instr_ori(&state);
+            break;
+        case FUNCT3_ANDI:
+            instr_andi(&state);
+            break;
+        case FUNCT3_SLLI:
+            instr_slli(&state);
+            break;
+        case FUNCT3_SR:
+            // funct7 in i types is kind of weird --
+            // just shift everything right by 5
+            switch(ir.I_type.imm11_0 >> 5)
+            {
+            case IMM_FUNCT_SRLI:
+                instr_srli(&state);
                 break;
-            case FUNCT3_SLTI:
-                instr_slti(&state);
+            case IMM_FUNCT_SRAI:
+                instr_srai(&state);
                 break;
-            case FUNCT3_SLTIU:
-                instr_sltiu(&state);
+            }
+            break;
+        }
+        break;
+
+    case OPC_ADD:
+        switch(ir.R_type.funct3)
+        {
+        case FUNCT3_ADD:
+            switch(ir.R_type.funct7)
+            {
+            case FUNCT7_ADD:
+                instr_add(&state);
                 break;
-            case FUNCT3_XORI:
-                instr_xori(&state);
+            case FUNCT7_SUB:
+                instr_sub(&state);
                 break;
-            case FUNCT3_ORI:
-                instr_ori(&state);
+            }
+            break;
+        case FUNCT3_SLL:
+            instr_sll(&state);
+            break;
+        case FUNCT3_SLT:
+            instr_slt(&state);
+            break;
+        case FUNCT3_SLTU:
+            instr_sltu(&state);
+            break;
+        case FUNCT3_XOR:
+            instr_xor(&state);
+            break;
+        case FUNCT3_SRL:
+            switch(ir.R_type.funct7)
+            {
+            case FUNCT7_SRL:
+                instr_srl(&state);
                 break;
-            case FUNCT3_ANDI:
-                instr_andi(&state);
+            case FUNCT7_SRA:
+                instr_sra(&state);
                 break;
-            case FUNCT3_SLLI:
-                instr_slli(&state);
-                break;
-            case FUNCT3_SR:
-                switch(ir.I_type.imm11_0 >> 5)
-                {
-                    case IMM_FUNCT_SRLI:
-                        instr_srli(&state);
-                        break;
-                    case IMM_FUNCT_SRAI:
-                        instr_srai(&state);
-                        break;
-                }
-                break;
+            }
+            break;
+        case FUNCT3_OR:
+            instr_or(&state);
+            break;
+        case FUNCT3_AND:
+            instr_and(&state);
+            break;
         }
         break;
     }
