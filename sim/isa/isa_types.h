@@ -98,6 +98,14 @@ enum {
 int instr_nop(riscv_state_t * state);
 int instr_lui(riscv_state_t * state);
 int instr_jal(riscv_state_t * state);
+int instr_jalr(riscv_state_t * state);
+int instr_beq(riscv_state_t * state);
+int instr_bne(riscv_state_t * state);
+int instr_blt(riscv_state_t * state);
+int instr_bge(riscv_state_t * state);
+int instr_bltu(riscv_state_t * state);
+int instr_bgeu(riscv_state_t * state);
+
 
 // immediate instructions
 int instr_addi(riscv_state_t * state);
