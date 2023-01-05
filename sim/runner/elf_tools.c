@@ -6,6 +6,8 @@
 #include "global.h"
 #include "elf_tools.h"
 
+
+
 section_data_t elf_get_section( FILE * elf_file, char * sect_name )
 {
     Elf64_Ehdr elf_hdr;

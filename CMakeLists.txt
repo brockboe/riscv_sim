@@ -9,6 +9,7 @@ set(SOURCES
     sim/isa/instr_branch.c
     sim/isa/instr_imm.c
     sim/isa/instr_reg.c
+    sim/baselib/linked_list.c
 )
 
 add_executable(riscv_sim ${SOURCES})
@@ -21,6 +22,7 @@ target_include_directories(riscv_sim
     PUBLIC
         ${PROJECT_SOURCE_DIR}/sim/isa
         ${PROJECT_SOURCE_DIR}/sim/runner
+        ${PROJECT_SOURCE_DIR}/sim/baselib
 )
 
 add_subdirectory(util/elf)
