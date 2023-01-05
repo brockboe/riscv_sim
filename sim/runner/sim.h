@@ -62,6 +62,17 @@ typedef union {
         uint32_t imm_20     : 1;
     } J_type;
 
+    struct {
+        uint32_t opcode     : 7;
+        uint32_t imm_11     : 1;
+        uint32_t imm_4_1    : 5;
+        uint32_t funct3     : 3;
+        uint32_t rs1        : 5;
+        uint32_t rs2        : 5;
+        uint32_t imm_10_5   : 6;
+        uint32_t imm_12     : 1;
+    } B_type;
+
     uint32_t raw;
 } instr_format_t;
 

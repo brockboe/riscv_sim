@@ -34,6 +34,9 @@ void sim_dispatch_instruction(instr_format_t ir)
     case OPC_JAL:
         instr_jal(&state);
         break;
+    case OPC_JALR:
+        instr_jalr(&state);
+        break;
 
     // immediate instructions
     case OPC_ADDI:
@@ -118,6 +121,30 @@ void sim_dispatch_instruction(instr_format_t ir)
             break;
         case FUNCT3_AND:
             instr_and(&state);
+            break;
+        }
+        break;
+
+    case OPC_BEQ:
+        switch(state.ir.B_type.funct3)
+        {
+        case FUNCT3_BEQ:
+            instr_beq(&state);
+            break;
+        case FUNCT3_BNE:
+            instr_bne(&state);
+            break;
+        case FUNCT3_BLT:
+            instr_blt(&state);
+            break;
+        case FUNCT3_BGE:
+            instr_blt(&state);
+            break;
+        case FUNCT3_BLTU:
+            instr_bltu(&state);
+            break;
+        case FUNCT3_BGEU:
+            instr_bgeu(&state);
             break;
         }
         break;

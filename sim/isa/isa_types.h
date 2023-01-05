@@ -77,6 +77,16 @@ enum {
     FUNCT3_AND  = 0b111,
 };
 
+// branch codes
+enum {
+    FUNCT3_BEQ  = 0b000,
+    FUNCT3_BNE  = 0b001,
+    FUNCT3_BLT  = 0b100,
+    FUNCT3_BGE  = 0b101,
+    FUNCT3_BLTU = 0b110,
+    FUNCT3_BGEU = 0b111,
+};
+
 enum {
     FUNCT7_ADD = 0b0000000,
     FUNCT7_SUB = 0b0100000,
